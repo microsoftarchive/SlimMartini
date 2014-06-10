@@ -42,7 +42,7 @@ func HttpServer(handler *Handler, port int) {
 func SpdyServer(handler *Handler, port int, cert string, key string) {
 	productionize()
 	addr := fmt.Sprintf(":%d", port)
-	log.Println("http://0.0.0.0" + addr)
+	log.Println("https://0.0.0.0" + addr)
 	err := spdy.ListenAndServeTLS(addr, cert, key, handler)
 	if err != nil {
 		log.Fatal(err)
