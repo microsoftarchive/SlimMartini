@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"runtime"
+	"time"
 )
 
 func productionize() {
@@ -33,7 +34,13 @@ func RedirectServer(port int) {
 func HttpServer(handler *Handler, port int) {
 	addr := fmt.Sprintf(":%d", port)
 	log.Println("http://0.0.0.0" + addr)
-	err := http.ListenAndServe(addr, handler)
+	server := &http.Server{
+		Addr:        addr,
+		Handler:     handler,
+		ReadTimeout: 10 * time.Second,
+	}
+	server.SetKeepAlivesEnabled(false)
+	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
